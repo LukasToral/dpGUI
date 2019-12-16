@@ -1,0 +1,17 @@
+.closeButton  {
+   	-fx-background-image: url('img/exitt.png');
+  	-fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+  	-fx-background-color: transparent;
+}
+
+.levaHorniText {
+	-fx-background-color: white;
+}
+
+.nazevProgramu {
+	
+    font-family: 'Work Sans';
+    src: url('font/worksans/WorkSans-Light.otf');
+
+}

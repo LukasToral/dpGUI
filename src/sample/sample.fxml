@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <AnchorPane prefHeight="480.0" prefWidth="200.0" style="-fx-background-color: #5CDB95;">
+         <children>
+            <HBox prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #05386B;">
+               <children>
+                  <Label id="nazevProgramu" fx:id="nazevProgramu" layoutX="-5.0" prefHeight="40.0" prefWidth="210.0" text="Šifrovací program" textAlignment="CENTER" textFill="#edf5e1">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                     <font>
+                        <Font name="Calibri" size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Button fx:id="buttonAES" layoutX="-5.0" layoutY="150.0" mnemonicParsing="false" onAction="#showAES" prefHeight="110.0" prefWidth="210.0" style="-fx-background-color: #5CDB95;" text="AES" textFill="#05386b">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonRSA" layoutX="-5.0" layoutY="260.0" mnemonicParsing="false" onAction="#showRSA" prefHeight="110.0" prefWidth="210.0" style="-fx-background-color: #8EE4AF;" text="RSA" textFill="#05386b">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonZacatek" layoutX="-5.0" layoutY="40.0" mnemonicParsing="false" onAction="#showZacatek" prefHeight="110.0" prefWidth="210.0" style="-fx-background-color: #379683;" text="Začátek" textFill="#05386b">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonDalsi" layoutX="-5.0" layoutY="370.0" mnemonicParsing="false" onAction="#showDalsi" prefHeight="109.0" prefWidth="210.0" style="-fx-background-color: #2ed177;" text="Dalsi" textFill="#05386b">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="200.0" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: transparent;">
+         <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Pane fx:id="paneDalsi" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #2ed177;" />
+                  <Pane fx:id="paneRSA" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #8EE4AF;" />
+                  <Pane fx:id="paneAES" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;" />
+                  <Pane fx:id="paneZacatek" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #379683;" />
+               </children>
+            </AnchorPane>
+            <Button id="closeButton" fx:id="closeButton" layoutX="493.0" mnemonicParsing="false" onAction="#closeApp" prefHeight="27.0" prefWidth="29.0" styleClass="closeButton" stylesheets="@../assets/style.css" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
