@@ -1,3 +1,5 @@
+//C:\Users\Lukas\Desktop\test.txt
+
 package sample;
 
 import javafx.event.ActionEvent;
@@ -7,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.security.KeyPair;
 
@@ -18,10 +21,14 @@ public class Controller{
     private String pathToFile;
     private KeyPair RSAkey;
 
+    private SecretKey AESkey;
+    private String AEStextToEncrypt;
+
+
     public javafx.scene.control.Button closeButton, buttonAES, buttonRSA;
-    public Pane paneAES, paneRSA, paneZacatek, paneDalsi, rsaTextInput, rsaStartPane, rsaTextInputOption, rsaPathInputOption, zasifrovanyTextPane;
-    public Label nazevProgramu, publicKey, privateKey;
-    public TextArea zasifrovanyText;
+    public Pane paneAES, paneRSA, paneZacatek, paneDalsi, rsaTextInput, rsaStartPane,zasifrovanyTextPaneRSA, rsaTextInputOption, rsaPathInputOption, zasifrovanyTextPane, aesPathInputOption, aesTextInputOption, aesStartPane, aesTextInput, sifraPaneRSA;
+    public Label nazevProgramu, publicKey, privateKey, KeyAES;
+    public TextArea zasifrovanyTextRSA, aesTextArea, AEScestaKsouboru, zasifrovanyTextAES;
     public TextArea rsaTextArea,RSAcestaKsouboru;
 
 
@@ -35,6 +42,7 @@ public class Controller{
 
     public void showAES(ActionEvent actionEvent) {
         paneAES.toFront();
+        aesStartPane.toFront();
     }
 
     public void showRSA(ActionEvent actionEvent) {
@@ -128,7 +136,7 @@ public class Controller{
             textFromFile.vypisSouboru();
 
             //Kontrola, zda se jedná o textový soubor
-            if (!textFromFile.jeSoubor()) {
+            if (!textFromFile.isFile()) {
                 Alert chyba = new Alert(Alert.AlertType.WARNING);
                 chyba.setTitle("Chyba v zadání!");
                 chyba.setHeaderText("Nebyla zadána správná cesta");
@@ -136,10 +144,11 @@ public class Controller{
                 chyba.showAndWait();
             }
             this.RSAtextToEncrypt = textFromFile.stringZeSouboru();
-            zasifrovanyTextPane.toFront();
+            sifraPaneRSA.toFront();
             System.out.println(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
             System.out.println(RSA.decrypt(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()), this.RSAkey.getPrivate()));
-            zasifrovanyText.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
+            zasifrovanyTextRSA.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
+
         //Kontrola, zda byla zadána cesta k souboru
         } else {
             Alert chyba = new Alert(Alert.AlertType.WARNING);
@@ -150,10 +159,13 @@ public class Controller{
         }
     }
 
-    public void toRSAencryptTextHandle(ActionEvent actionEvent) {
+    public void toRSAencryptTextHandle(ActionEvent actionEvent) throws Exception {
         this.RSAtextToEncrypt = rsaTextArea.getText();
         if (!this.RSAtextToEncrypt.isEmpty()) {
-            zasifrovanyTextPane.toFront();
+            sifraPaneRSA.toFront();
+            System.out.println(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
+            System.out.println(RSA.decrypt(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()), this.RSAkey.getPrivate()));
+            zasifrovanyTextRSA.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
         } else {
             Alert chyba = new Alert(Alert.AlertType.WARNING);
             chyba.setTitle("Chyba v zadání!");
@@ -164,10 +176,99 @@ public class Controller{
     }
 
     public void decryptRSA(ActionEvent actionEvent) throws Exception {
-        zasifrovanyText.setText(RSA.decrypt(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()), this.RSAkey.getPrivate()));
+        zasifrovanyTextRSA.setText(RSA.decrypt(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()), this.RSAkey.getPrivate()));
     }
 
     public void encryptRSA(ActionEvent actionEvent) throws Exception {
-        zasifrovanyText.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
+        zasifrovanyTextRSA.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
+    }
+
+    public void generateKeyHandle(ActionEvent actionEvent) throws Exception {
+        this.AESkey = AES.generateKeyPair();
+        KeyAES.setText(String.valueOf(AESkey.getEncoded()));
+    }
+
+    public void aesTextInputHandle(ActionEvent actionEvent) {
+        aesTextInputOption.toFront();
+    }
+
+    public void toAESTextInput(ActionEvent actionEvent) {
+        if (this.AESkey != null) {
+            aesTextInput.toFront();
+            System.out.println(String.valueOf(this.AESkey).isEmpty());
+            System.out.println(this.AESkey);
+            //Kontrola, zda byla zadána velikost klíče
+        } else {
+            Alert chyba = new Alert(Alert.AlertType.WARNING);
+            chyba.setTitle("Chyba v zadání!");
+            chyba.setHeaderText("Nebyl vygenerován klíč");
+            chyba.setContentText("Nejprve si, prosím, vygenerujte klíč k zašifrování a dešifrování.");
+            chyba.showAndWait();
+        }
+    }
+
+    public void aesPathHandle(ActionEvent actionEvent) {
+        aesPathInputOption.toFront();
+    }
+
+    public void toAESencryptPathHandle(ActionEvent actionEvent) throws IOException {
+        this.pathToFile = AEScestaKsouboru.getText();
+        if (!this.pathToFile.isEmpty() && this.pathToFile.trim().length() > 0) {
+            //Upravi vlozenou cestu k souboru tak, aby s ni slo dale pracovat C:\ -> C:\\
+            char[] charArray = pathToFile.toCharArray();
+            //Projde po pismencich predvytvorene pole znaků a pokud najde znak \, nahradí ho znakem \\
+            for (char letter : charArray) {
+                if (letter == '\\' && charArray[pathToFile.indexOf(letter)+1] != '\\') {
+                    pathToFile = pathToFile.replace(String.valueOf(letter), "\\\\");
+                    break;
+                }
+            }
+            Text textFromFile = new Text(pathToFile);
+            textFromFile.vypisSouboru();
+
+            //Kontrola, zda se jedná o textový soubor
+            if (textFromFile.isFile()) {
+                this.AEStextToEncrypt = textFromFile.stringZeSouboru();
+                zasifrovanyTextPane.toFront();
+                zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt,String.valueOf(this.AESkey)));
+                System.out.println(this.pathToFile);
+            } else {
+                Alert chyba = new Alert(Alert.AlertType.WARNING);
+                chyba.setTitle("Chyba v zadání!");
+                chyba.setHeaderText("Nebyla zadána správná cesta");
+                chyba.setContentText("Na Vámi zadené cestě nebyl nalezen textový soubor.");
+                chyba.showAndWait();
+            }
+
+            //Kontrola, zda byla zadána cesta k souboru
+        } else {
+            Alert chyba = new Alert(Alert.AlertType.WARNING);
+            chyba.setTitle("Chyba v zadání!");
+            chyba.setHeaderText("Nebyla nalezena cesta k souboru");
+            chyba.setContentText("Nejprve, prosím zadejte cestu k souboru.");
+            chyba.showAndWait();
+        }
+    }
+
+    public void toAESencryptTextHandle(ActionEvent actionEvent) {
+        this.AEStextToEncrypt = aesTextArea.getText();
+        if (!this.AEStextToEncrypt.isEmpty() && this.AEStextToEncrypt.trim().length() > 0) {
+            zasifrovanyTextPane.toFront();
+            zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt,String.valueOf(this.AESkey)));
+        } else {
+            Alert chyba = new Alert(Alert.AlertType.WARNING);
+            chyba.setTitle("Chyba v zadání!");
+            chyba.setHeaderText("Nebyl vložen text k zašifrování");
+            chyba.setContentText("Nejprve, prosím zadejte text k zašifrování.");
+            chyba.showAndWait();
+        }
+    }
+
+    public void decryptAES(ActionEvent actionEvent) {
+        zasifrovanyTextAES.setText(AES.decrypt(AES.encrypt(this.AEStextToEncrypt,String.valueOf(this.AESkey)), String.valueOf(this.AESkey)));
+    }
+
+    public void encryptAES(ActionEvent actionEvent) {
+        zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt,String.valueOf(this.AESkey)));
     }
 }

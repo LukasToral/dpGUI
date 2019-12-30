@@ -12,7 +12,7 @@ public class Text {
         this.textovySoubor = new File(cestakSouboru);
     }
 
-    public boolean jeSoubor() {
+    public boolean isFile() {
         if (textovySoubor.exists() && !textovySoubor.isDirectory()) {
             return true;
         } else {

@@ -3,10 +3,13 @@ package sample;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 
@@ -36,6 +39,14 @@ public class AES {
         catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    public static SecretKey generateKeyPair() throws Exception {
+        KeyGenerator generator = KeyGenerator.getInstance("AES");
+        SecureRandom random = new SecureRandom(); // cryptograph. secure random
+        generator.init(random);
+        SecretKey secretKey = generator.generateKey();
+        return secretKey;
     }
 
     public static String encrypt(String strToEncrypt, String secret)

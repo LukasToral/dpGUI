@@ -45,25 +45,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws IOException {
-//        Text textovySouobor = new Text("C:\\Users\\Lukas\\Desktop\\test.txt");
-//        textovySouobor.vypisSouboru();
-//        System.out.print(textovySouobor.vytvoreniPoleZnaku());
-//        System.out.println(textovySouobor.stringZeSouboru());
-//        try {
-//            System.out.println("RSA");
-//            KeyPair klic = RSA.generateKeyPair();
-//            String zasifrovanyText = RSA.encrypt(textovySouobor.stringZeSouboru(),klic.getPublic());
-//            System.out.println(zasifrovanyText);
-//            System.out.println(RSA.decrypt(zasifrovanyText,klic.getPrivate()));
-//
-//            System.out.println("AES");
-//            String key = "1234567891234566";
-//            String a = AES.encrypt(textovySouobor.stringZeSouboru(), key);
-//            System.out.println(a);
-//            System.out.println(AES.decrypt(a, key));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         launch(args);
     }
 
