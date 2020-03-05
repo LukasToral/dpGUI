@@ -1,6 +1,7 @@
 package sample;
 
 import javax.crypto.Cipher;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.Base64;
 
@@ -32,7 +33,7 @@ public class RSA{
         Cipher encryptCipher = Cipher.getInstance("RSA");
         encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
-        byte[] cipherText = encryptCipher.doFinal(plainText.getBytes("UTF-8"));
+        byte[] cipherText = encryptCipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
 
         return Base64.getEncoder().encodeToString(cipherText);
     }
@@ -43,7 +44,7 @@ public class RSA{
         Cipher decriptCipher = Cipher.getInstance("RSA");
         decriptCipher.init(Cipher.DECRYPT_MODE, privateKey);
 
-        return new String(decriptCipher.doFinal(bytes), "UTF-8");
+        return new String(decriptCipher.doFinal(bytes), StandardCharsets.UTF_8);
     }
 
 

@@ -19,7 +19,7 @@ import java.security.KeyPair;
 public class Controller {
 
     public javafx.scene.control.Button closeButton, buttonAES, buttonRSA;
-    public Pane paneAES, paneRSA, paneZacatek, paneDalsi, rsaTextInput, rsaStartPane, zasifrovanyTextPaneRSA, rsaTextInputOption, rsaPathInputOption, zasifrovanyTextPane, aesPathInputOption, aesTextInputOption, aesStartPane, aesTextInput, sifraPaneRSA, rsaFileInput, aesFileInput;
+    public Pane paneAES, paneRSA, paneZacatek, paneDalsi, rsaTextInput, rsaStartPane, zasifrovanyTextPaneRSA, rsaTextInputOption, rsaPathInputOption, zasifrovanyTextPane, aesPathInputOption, aesTextInputOption, aesStartPane, aesTextInput, sifraPaneRSA, rsaFileInput, aesFileInputOption;
     public Label nazevProgramu, publicKey, privateKey, KeyAES;
     public TextArea zasifrovanyTextRSA, aesTextArea, AEScestaKsouboru, zasifrovanyTextAES;
     public TextArea rsaTextArea, RSAcestaKsouboru;
@@ -300,12 +300,13 @@ public class Controller {
 
         //Vyjimka, pokud by nebyl vybrán žádný soubor, zobrazí chybovou hlášku
         try {
+
             //Zobrazení dialogu pro načtení souboru
             File selectedFile = fileChooser.showOpenDialog(stage);
             Text txt = new Text(String.valueOf(selectedFile.getAbsoluteFile()));
 
-            if (caller == "aes") {
-                aesFileInput.toFront();
+            if (caller.equalsIgnoreCase("aes")) {
+                aesFileInputOption.toFront();
                 this.AEStextToEncrypt = txt.stringZeSouboru();
             } else {
                 rsaFileInput.toFront();
@@ -322,8 +323,15 @@ public class Controller {
     }
 
 
-    public void toEncryptFileHandle(ActionEvent actionEvent) {
+    public void toEncryptFileHandle(ActionEvent actionEvent) throws Exception {
         String caller = actionEvent.getSource().toString().substring(12, 15).toLowerCase();
-        System.out.println(caller);
+        //Pouzita funkce equalsIgnorecase, protoze nefungovalo porovnavani pomoci ==
+        if (caller.equalsIgnoreCase("aes")) {
+            zasifrovanyTextPane.toFront();
+            zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt, String.valueOf(this.AESkey)));
+        } else {
+            sifraPaneRSA.toFront();
+            zasifrovanyTextRSA.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
+        }
     }
 }
