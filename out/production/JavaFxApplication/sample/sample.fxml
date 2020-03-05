@@ -197,7 +197,8 @@
                               </Button>
                            </children>
                         </Pane>
-                     </children></Pane>
+                     </children>
+                  </Pane>
                   <Pane fx:id="paneAES" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
                      <children>
                         <Pane fx:id="aesStartPane" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
