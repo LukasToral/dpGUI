@@ -3,34 +3,37 @@
 package sample;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
 
 import javax.crypto.SecretKey;
+import java.io.File;
 import java.io.IOException;
 import java.security.KeyPair;
 
 
-public class Controller{
+public class Controller {
 
+    public javafx.scene.control.Button closeButton, buttonAES, buttonRSA;
+    public Pane paneAES, paneRSA, paneZacatek, paneDalsi, rsaTextInput, rsaStartPane, zasifrovanyTextPaneRSA, rsaTextInputOption, rsaPathInputOption, zasifrovanyTextPane, aesPathInputOption, aesTextInputOption, aesStartPane, aesTextInput, sifraPaneRSA, rsaFileInput, aesFileInput;
+    public Label nazevProgramu, publicKey, privateKey, KeyAES;
+    public TextArea zasifrovanyTextRSA, aesTextArea, AEScestaKsouboru, zasifrovanyTextAES;
+    public TextArea rsaTextArea, RSAcestaKsouboru;
+    private Stage stage;
     private int RSAkeySize = 0;
     private String RSAtextToEncrypt;
     private String pathToFile;
     private KeyPair RSAkey;
-
     private SecretKey AESkey;
     private String AEStextToEncrypt;
 
-
-    public javafx.scene.control.Button closeButton, buttonAES, buttonRSA;
-    public Pane paneAES, paneRSA, paneZacatek, paneDalsi, rsaTextInput, rsaStartPane,zasifrovanyTextPaneRSA, rsaTextInputOption, rsaPathInputOption, zasifrovanyTextPane, aesPathInputOption, aesTextInputOption, aesStartPane, aesTextInput, sifraPaneRSA;
-    public Label nazevProgramu, publicKey, privateKey, KeyAES;
-    public TextArea zasifrovanyTextRSA, aesTextArea, AEScestaKsouboru, zasifrovanyTextAES;
-    public TextArea rsaTextArea,RSAcestaKsouboru;
-
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public void closeApp(ActionEvent actionEvent) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
@@ -38,7 +41,6 @@ public class Controller{
         stage.close();
 
     }
-
 
     public void showAES(ActionEvent actionEvent) {
         paneAES.toFront();
@@ -102,7 +104,7 @@ public class Controller{
     public void toRSATextInputHandle(ActionEvent actionEvent) {
         if (this.RSAkeySize != 0) {
             rsaTextInput.toFront();
-        //Kontrola, zda byla zadána velikost klíče
+            //Kontrola, zda byla zadána velikost klíče
         } else {
             Alert chyba = new Alert(Alert.AlertType.WARNING);
             chyba.setTitle("Chyba v zadání!");
@@ -127,13 +129,18 @@ public class Controller{
             char[] charArray = pathToFile.toCharArray();
             //Projde po pismencich predvytvorene pole znaků a pokud najde znak \, nahradí ho znakem \\
             for (char letter : charArray) {
-                if (letter == '\\' && charArray[pathToFile.indexOf(letter)+1] != '\\') {
+                if (letter == '\\' && charArray[pathToFile.indexOf(letter) + 1] != '\\') {
                     pathToFile = pathToFile.replace(String.valueOf(letter), "\\\\");
                     break;
                 }
             }
+
+            //Nacte soubor pomoci tridy Text
             Text textFromFile = new Text(pathToFile);
             textFromFile.vypisSouboru();
+            //Nastavi ze souboru text, ktery se bude pozdeji sifrovat
+            this.RSAtextToEncrypt = textFromFile.stringZeSouboru();
+
 
             //Kontrola, zda se jedná o textový soubor
             if (!textFromFile.isFile()) {
@@ -143,13 +150,14 @@ public class Controller{
                 chyba.setContentText("Na Vámi zadené cestě nebyl nalezen textový soubor.");
                 chyba.showAndWait();
             }
-            this.RSAtextToEncrypt = textFromFile.stringZeSouboru();
+
+
             sifraPaneRSA.toFront();
             System.out.println(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
             System.out.println(RSA.decrypt(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()), this.RSAkey.getPrivate()));
             zasifrovanyTextRSA.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
 
-        //Kontrola, zda byla zadána cesta k souboru
+            //Kontrola, zda byla zadána cesta k souboru
         } else {
             Alert chyba = new Alert(Alert.AlertType.WARNING);
             chyba.setTitle("Chyba v zadání!");
@@ -218,7 +226,7 @@ public class Controller{
             char[] charArray = pathToFile.toCharArray();
             //Projde po pismencich predvytvorene pole znaků a pokud najde znak \, nahradí ho znakem \\
             for (char letter : charArray) {
-                if (letter == '\\' && charArray[pathToFile.indexOf(letter)+1] != '\\') {
+                if (letter == '\\' && charArray[pathToFile.indexOf(letter) + 1] != '\\') {
                     pathToFile = pathToFile.replace(String.valueOf(letter), "\\\\");
                     break;
                 }
@@ -230,7 +238,7 @@ public class Controller{
             if (textFromFile.isFile()) {
                 this.AEStextToEncrypt = textFromFile.stringZeSouboru();
                 zasifrovanyTextPane.toFront();
-                zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt,String.valueOf(this.AESkey)));
+                zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt, String.valueOf(this.AESkey)));
                 System.out.println(this.pathToFile);
             } else {
                 Alert chyba = new Alert(Alert.AlertType.WARNING);
@@ -254,7 +262,7 @@ public class Controller{
         this.AEStextToEncrypt = aesTextArea.getText();
         if (!this.AEStextToEncrypt.isEmpty() && this.AEStextToEncrypt.trim().length() > 0) {
             zasifrovanyTextPane.toFront();
-            zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt,String.valueOf(this.AESkey)));
+            zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt, String.valueOf(this.AESkey)));
         } else {
             Alert chyba = new Alert(Alert.AlertType.WARNING);
             chyba.setTitle("Chyba v zadání!");
@@ -265,10 +273,57 @@ public class Controller{
     }
 
     public void decryptAES(ActionEvent actionEvent) {
-        zasifrovanyTextAES.setText(AES.decrypt(AES.encrypt(this.AEStextToEncrypt,String.valueOf(this.AESkey)), String.valueOf(this.AESkey)));
+        zasifrovanyTextAES.setText(AES.decrypt(AES.encrypt(this.AEStextToEncrypt, String.valueOf(this.AESkey)), String.valueOf(this.AESkey)));
     }
 
     public void encryptAES(ActionEvent actionEvent) {
-        zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt,String.valueOf(this.AESkey)));
+        zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt, String.valueOf(this.AESkey)));
+    }
+
+    public void rsaFindFile(ActionEvent actionEvent) throws IOException {
+
+    }
+
+    public void aesFindFile(ActionEvent actionEvent) {
+        String caller = actionEvent.getSource().toString().substring(10, 13);
+        System.out.println(caller);
+    }
+
+    public void findFile(ActionEvent actionEvent) {
+        String caller = actionEvent.getSource().toString().substring(10, 13);
+
+        //Vytvoření filechooser pro načtení souboru
+        FileChooser fileChooser = new FileChooser();
+        //Filtr pro možnost načtení pouze .txt souborů
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+
+        //Vyjimka, pokud by nebyl vybrán žádný soubor, zobrazí chybovou hlášku
+        try {
+            //Zobrazení dialogu pro načtení souboru
+            File selectedFile = fileChooser.showOpenDialog(stage);
+            Text txt = new Text(String.valueOf(selectedFile.getAbsoluteFile()));
+
+            if (caller == "aes") {
+                aesFileInput.toFront();
+                this.AEStextToEncrypt = txt.stringZeSouboru();
+            } else {
+                rsaFileInput.toFront();
+                this.RSAtextToEncrypt = txt.stringZeSouboru();
+            }
+
+        } catch (Exception e) {
+            Alert chyba = new Alert(Alert.AlertType.WARNING);
+            chyba.setTitle("Nastala chyba");
+            chyba.setHeaderText("Nebyl vybrán soubor.");
+            chyba.setContentText("Nebyl načten text k zašifrování, protože nebyl vybrán žádný textový soubor");
+            chyba.showAndWait();
+        }
+    }
+
+
+    public void toEncryptFileHandle(ActionEvent actionEvent) {
+        String caller = actionEvent.getSource().toString().substring(12, 15).toLowerCase();
+        System.out.println(caller);
     }
 }

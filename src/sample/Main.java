@@ -5,13 +5,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import javafx.scene.input.MouseEvent;
-
 import java.io.IOException;
-import java.security.KeyPair;
 
 public class Main extends Application {
 
@@ -20,9 +18,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+
+        //Spusteni aplikace
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        Parent root = loader.load();
+
+        //Inicializace tridy Controller kvuli predani primaryStage potrebneho pro filechooser
+        Controller ctr = loader.getController();
+        ctr.setStage(primaryStage);
         primaryStage.setTitle("Hello World");
         primaryStage.initStyle(StageStyle.UNDECORATED);
+
 
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override

@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <AnchorPane prefHeight="480.0" prefWidth="200.0" style="-fx-background-color: #5CDB95;">
@@ -53,12 +46,129 @@
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
+                  <Pane fx:id="paneZacatek" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #379683;">
+                     <children>
+                        <Text fill="#edf5e1" layoutX="35.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Lukáš Toral">
+                           <font>
+                              <Font size="36.0"/>
+                           </font>
+                        </Text>
+                        <Text fill="#edf5e1" layoutX="35.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="I4B">
+                           <font>
+                              <Font size="36.0"/>
+                           </font>
+                        </Text>
+                        <Text fill="#05386b" layoutX="35.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Dlouhodobá maturitní práce">
+                           <font>
+                              <Font size="36.0"/>
+                           </font>
+                        </Text>
+                        <Text fill="#05386b" layoutX="35.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Vedoucí práce:" wrappingWidth="462.05859375">
+                           <font>
+                              <Font size="36.0"/>
+                           </font>
+                        </Text>
+                        <Text fill="#edf5e1" layoutX="35.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Mgr. Radek Nowak">
+                           <font>
+                              <Font size="36.0"/>
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="paneDalsi" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #2ed177;">
+                     <children>
+                        <Text fill="#05386b" layoutX="170.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Vlastní RSA">
+                           <font>
+                              <Font size="36.0"/>
+                           </font>
+                        </Text>
+                        <Text layoutX="139.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="1. prvočíslo:"/>
+                        <Text layoutX="322.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="2. prvočíslo:"/>
+                        <Label layoutX="107.0" layoutY="87.0"
+                               text="Prosím, zadejte 2 prvočísla, kdy 1 bude větší, než to druhé"/>
+                        <TextField layoutX="96.0" layoutY="144.0"/>
+                        <TextField layoutX="279.0" layoutY="144.0"/>
+                        <Label layoutX="154.0" layoutY="208.0" text="Zadejte velmi krátky text pro zašifrování"/>
+                        <TextField layoutX="186.0" layoutY="240.0"/>
+                        <Button layoutX="233.0" layoutY="401.0" mnemonicParsing="false" text="Button"/>
+                     </children></Pane>
                   <Pane fx:id="paneRSA" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #8EE4AF;">
                      <children>
-                        <Pane fx:id="rsaTextInput" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #8EE4AF;">
+                        <Pane fx:id="sifraPaneRSA" prefHeight="480.0" prefWidth="520.0"
+                              style="-fx-background-color: #8EE4AF;">
                            <children>
-                              <Button fx:id="rsaTextOption" layoutX="126.0" layoutY="144.0" mnemonicParsing="false" onAction="#rsaTextInputHandle" style="-fx-min-width: 102;" text="Text" />
-                              <Text fill="#05386b" layoutX="228.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RSA">
+                              <Text layoutX="195.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="Zašifrovaný text:">
+                                 <font>
+                                    <Font size="18.0"/>
+                                 </font>
+                              </Text>
+                              <Text fill="#05386b" layoutX="228.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="RSA">
+                                 <font>
+                                    <Font size="36.0"/>
+                                 </font>
+                              </Text>
+                              <TextArea fx:id="zasifrovanyTextRSA" layoutX="10.0" layoutY="120.0" maxWidth="500.0"
+                                        prefColumnCount="3" prefHeight="300.0" prefWidth="500.0"/>
+                              <Button fx:id="desifrovatRSA" layoutX="187.0" layoutY="430.0" mnemonicParsing="false"
+                                      onAction="#decryptRSA" text="Dešifrovat"/>
+                              <Button fx:id="sifrovatRSA" layoutX="276.0" layoutY="430.0" mnemonicParsing="false"
+                                      onAction="#encryptRSA" text="Šifrovat"/>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="rsaStartPane" prefHeight="480.0" prefWidth="520.0"
+                              style="-fx-background-color: #8EE4AF;">
+                           <children>
+                              <Label fx:id="publicKey" layoutX="43.0" layoutY="184.0" prefHeight="246.0"
+                                     prefWidth="200.0" style="-fx-border-color: #05386b; -fx-border-width: 3;"/>
+                              <Text fill="#05386b" layoutX="228.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="RSA">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Text>
+                              <Button fx:id="firstSize" layoutX="130.0" layoutY="117.0" mnemonicParsing="false"
+                                      onAction="#setFirst" text="512"/>
+                              <Button fx:id="secondSize" layoutX="182.0" layoutY="117.0" mnemonicParsing="false"
+                                      onAction="#setSecond" text="1024"/>
+                              <Button fx:id="thirdSize" layoutX="232.0" layoutY="117.0" mnemonicParsing="false"
+                                      onAction="#setThird" text="2048"/>
+                              <Button fx:id="fourthSize" layoutX="284.0" layoutY="117.0" mnemonicParsing="false"
+                                      onAction="#setFourth" text="3072"/>
+                              <Button fx:id="fifthSize" layoutX="336.0" layoutY="117.0" mnemonicParsing="false"
+                                      onAction="#setFifth" text="4096"/>
+                              <Text layoutX="52.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="Zvolte velikost vygenerovaného public a private key:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Label fx:id="privateKey" layoutX="266.0" layoutY="184.0" prefHeight="246.0"
+                                     prefWidth="200.0" style="-fx-border-color: #05386b; -fx-border-width: 3;"/>
+                              <Text layoutX="43.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="Public key:"/>
+                              <Text layoutX="266.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="Private key:"/>
+                              <Button fx:id="toRSATextInput" layoutX="235.0" layoutY="441.0" mnemonicParsing="false"
+                                      onAction="#toRSATextInputHandle" text="Dále"/>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="rsaTextInput" prefHeight="480.0" prefWidth="520.0"
+                              style="-fx-background-color: #8EE4AF;">
+                           <children>
+                              <Button fx:id="rsaTextOption" layoutX="55.0" layoutY="144.0" mnemonicParsing="false"
+                                      onAction="#rsaTextInputHandle" style="-fx-min-width: 102;" text="Text"/>
+                              <Text fill="#05386b" layoutX="228.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="RSA">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
@@ -68,145 +178,92 @@
                                     <Font size="18.0" />
                                  </font>
                               </Text>
-                              <Button fx:id="rsaPathOption" layoutX="292.0" layoutY="144.0" mnemonicParsing="false" onAction="#rsaPathHandle" style="-fx-min-width: 102;" text="Cesta k souboru">
+                              <Button fx:id="rsaPathOption" layoutX="362.0" layoutY="144.0" mnemonicParsing="false"
+                                      onAction="#rsaPathHandle" style="-fx-min-width: 102;" text="Cesta k souboru">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
                               </Button>
                               <Pane layoutY="176.0" prefHeight="200.0" prefWidth="520.0">
                                  <children>
-                                    <Pane fx:id="rsaPathInputOption" prefHeight="300.0" prefWidth="520.0" style="-fx-background-color: #8EE4AF;">
+                                    <Pane fx:id="rsaPathInputOption" prefHeight="300.0" prefWidth="520.0"
+                                          style="-fx-background-color: #8EE4AF;">
                                        <children>
-                                          <TextArea fx:id="RSAcestaKsouboru" layoutX="10.0" layoutY="78.0" prefHeight="50.0" prefWidth="500.0" style="-fx-border-color: #05386b; -fx-border-width: 3;" />
-                                          <Text layoutX="134.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vložte, prosím, cestu k souboru:">
+                                          <TextArea fx:id="RSAcestaKsouboru" layoutX="10.0" layoutY="78.0"
+                                                    prefHeight="50.0" prefWidth="500.0"
+                                                    style="-fx-border-color: #05386b; -fx-border-width: 3;"/>
+                                          <Text layoutX="134.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                text="Vložte, prosím, cestu k souboru:">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
-                                          <Button fx:id="toRSAencryptPath" layoutX="240.0" layoutY="261.0" mnemonicParsing="false" onAction="#toRSAencryptPathHandle" text="Dále" />
+                                          <Button fx:id="toRSAencryptPath" layoutX="240.0" layoutY="261.0"
+                                                  mnemonicParsing="false" onAction="#toRSAencryptPathHandle"
+                                                  text="Dále"/>
                                        </children>
                                     </Pane>
-                                    <Pane fx:id="rsaTextInputOption" prefHeight="300.0" prefWidth="520.0" style="-fx-background-color: #8EE4AF;">
+                                    <Pane fx:id="rsaTextInputOption" prefHeight="300.0" prefWidth="520.0"
+                                          style="-fx-background-color: #8EE4AF;">
                                        <children>
-                                          <Button fx:id="toRSAencryptText" layoutX="240.0" layoutY="261.0" mnemonicParsing="false" onAction="#toRSAencryptTextHandle" text="Dále" />
-                                          <Text fx:id="RSAtext" layoutX="131.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vložte, prosím, text k zašifrování:">
+                                          <Button fx:id="toRSAencryptText" layoutX="240.0" layoutY="261.0"
+                                                  mnemonicParsing="false" onAction="#toRSAencryptTextHandle"
+                                                  text="Dále"/>
+                                          <Text fx:id="RSAtext" layoutX="131.0" layoutY="34.0" strokeType="OUTSIDE"
+                                                strokeWidth="0.0" text="Vložte, prosím, text k zašifrování:">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
-                                          <TextArea fx:id="rsaTextArea" layoutX="10.0" layoutY="40.0" prefHeight="160.0" prefWidth="500.0" style="-fx-border-color: #05386b; -fx-border-width: 3;" />
+                                          <TextArea fx:id="rsaTextArea" layoutX="10.0" layoutY="40.0" prefHeight="160.0"
+                                                    prefWidth="500.0"
+                                                    style="-fx-border-color: #05386b; -fx-border-width: 3;"/>
+                                       </children>
+                                    </Pane>
+                                    <Pane fx:id="rsaFileInput" prefHeight="300.0" prefWidth="520.0"
+                                          style="-fx-background-color: #8EE4AF;">
+                                       <children>
+                                          <Button fx:id="toRSAencryptFile" layoutX="240.0" layoutY="261.0"
+                                                  mnemonicParsing="false" onAction="#toEncryptFileHandle" text="Dále"/>
                                        </children>
                                     </Pane>
                                  </children>
                               </Pane>
-                           </children>
-                        </Pane>
-                        <Pane fx:id="sifraPaneRSA" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #8EE4AF;">
-                           <children>
-                              <Text layoutX="195.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Zašifrovaný text:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="#05386b" layoutX="228.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RSA">
-                                 <font>
-                                    <Font size="36.0" />
-                                 </font>
-                              </Text>
-                              <TextArea fx:id="zasifrovanyTextRSA" layoutX="10.0" layoutY="120.0" maxWidth="500.0" prefColumnCount="3" prefHeight="300.0" prefWidth="500.0" />
-                              <Button fx:id="desifrovatRSA" layoutX="187.0" layoutY="430.0" mnemonicParsing="false" onAction="#decryptRSA" text="Dešifrovat" />
-                              <Button fx:id="sifrovatRSA" layoutX="276.0" layoutY="430.0" mnemonicParsing="false" onAction="#encryptRSA" text="Šifrovat" />
-                           </children>
-                        </Pane>
-                        <Pane fx:id="rsaStartPane" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #8EE4AF;">
-                           <children>
-                              <Label fx:id="publicKey" layoutX="43.0" layoutY="184.0" prefHeight="246.0" prefWidth="200.0" style="-fx-border-color: #05386b; -fx-border-width: 3;" />
-                              <Text fill="#05386b" layoutX="228.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RSA">
-                                 <font>
-                                    <Font size="36.0" />
-                                 </font>
-                              </Text>
-                              <Button fx:id="firstSize" layoutX="130.0" layoutY="117.0" mnemonicParsing="false" onAction="#setFirst" text="512" />
-                              <Button fx:id="secondSize" layoutX="182.0" layoutY="117.0" mnemonicParsing="false" onAction="#setSecond" text="1024" />
-                              <Button fx:id="thirdSize" layoutX="232.0" layoutY="117.0" mnemonicParsing="false" onAction="#setThird" text="2048" />
-                              <Button fx:id="fourthSize" layoutX="284.0" layoutY="117.0" mnemonicParsing="false" onAction="#setFourth" text="3072" />
-                              <Button fx:id="fifthSize" layoutX="336.0" layoutY="117.0" mnemonicParsing="false" onAction="#setFifth" text="4096" />
-                              <Text layoutX="52.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Zvolte velikost vygenerovaného public a private key:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <Label fx:id="privateKey" layoutX="266.0" layoutY="184.0" prefHeight="246.0" prefWidth="200.0" style="-fx-border-color: #05386b; -fx-border-width: 3;" />
-                              <Text layoutX="43.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Public key:" />
-                              <Text layoutX="266.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Private key:" />
-                              <Button fx:id="toRSATextInput" layoutX="235.0" layoutY="441.0" mnemonicParsing="false" onAction="#toRSATextInputHandle" text="Dále" />
-                           </children>
-                        </Pane>
-                     </children></Pane>
-                  <Pane fx:id="paneAES" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
-                     <children>
-                        <Pane fx:id="aesStartPane" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
-                           <children>
-                              <Label fx:id="KeyAES" layoutX="10.0" layoutY="184.0" prefHeight="150.0" prefWidth="500.0" style="-fx-border-color: #05386b; -fx-border-width: 3; -fx-text-alignment: center;" />
-                              <Text fill="#05386b" layoutX="228.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AES">
-                                 <font>
-                                    <Font size="36.0" />
-                                 </font>
-                              </Text>
-                              <Button fx:id="generateKey" layoutX="213.0" layoutY="122.0" mnemonicParsing="false" onAction="#generateKeyHandle" text="Generovat klíč:" />
-                              <Text layoutX="52.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vygenerujte si, prosím, klíč k zašifrování/dešifrování:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <Text layoutX="250.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Klíč:" />
-                              <Button fx:id="toAESTextInput" layoutX="235.0" layoutY="441.0" mnemonicParsing="false" onAction="#toAESTextInput" text="Dále" />
-                           </children>
-                        </Pane>
-                        <Pane fx:id="aesTextInput" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
-                           <children>
-                              <Button fx:id="aesTextOption" layoutX="126.0" layoutY="144.0" mnemonicParsing="false" onAction="#aesTextInputHandle" style="-fx-min-width: 102;" text="Text" />
-                              <Text fill="#05386b" layoutX="230.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AES">
-                                 <font>
-                                    <Font size="36.0" />
-                                 </font>
-                              </Text>
-                              <Text layoutX="55.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Zvolte, jakým způsobem vložíte text pro zašifrování:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <Button fx:id="aesPathOption" layoutX="292.0" layoutY="144.0" mnemonicParsing="false" onAction="#aesPathHandle" style="-fx-min-width: 102;" text="Cesta k souboru">
+                              <Button fx:id="rsaFindFile" layoutX="209.0" layoutY="144.0" mnemonicParsing="false"
+                                      onAction="#findFile" style="-fx-min-width: 102;" text="Najít soubor">
                                  <opaqueInsets>
-                                    <Insets />
+                                    <Insets/>
                                  </opaqueInsets>
                               </Button>
-                              <Pane layoutY="176.0" prefHeight="200.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
-                                 <children>
-                                    <Pane fx:id="aesTextInputOption" prefHeight="300.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
-                                       <children>
-                                          <Button fx:id="toAESencryptText" layoutX="240.0" layoutY="261.0" mnemonicParsing="false" onAction="#toAESencryptTextHandle" text="Dále" />
-                                          <Text fx:id="RSAtext1" layoutX="131.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vložte, prosím, text k zašifrování:">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <TextArea fx:id="aesTextArea" layoutX="10.0" layoutY="40.0" prefHeight="160.0" prefWidth="500.0" style="-fx-border-color: #05386b; -fx-border-width: 3;" />
-                                       </children>
-                                    </Pane>
-                                    <Pane fx:id="aesPathInputOption" prefHeight="300.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
-                                       <children>
-                                          <TextArea fx:id="AEScestaKsouboru" layoutX="10.0" layoutY="78.0" prefHeight="50.0" prefWidth="500.0" style="-fx-border-color: #05386b; -fx-border-width: 3;" />
-                                          <Text layoutX="134.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vložte, prosím, cestu k souboru:">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <Button fx:id="toAESencryptPath" layoutX="240.0" layoutY="261.0" mnemonicParsing="false" onAction="#toAESencryptPathHandle" text="Dále" />
-                                       </children>
-                                    </Pane>
-                                 </children>
-                              </Pane>
+                           </children>
+                        </Pane>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="paneAES" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
+                     <children>
+                        <Pane fx:id="aesStartPane" prefHeight="480.0" prefWidth="520.0"
+                              style="-fx-background-color: #5CDB95;">
+                           <children>
+                              <Label fx:id="KeyAES" layoutX="10.0" layoutY="184.0" prefHeight="150.0" prefWidth="500.0"
+                                     style="-fx-border-color: #05386b; -fx-border-width: 3; -fx-text-alignment: center;"/>
+                              <Text fill="#05386b" layoutX="228.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="AES">
+                                 <font>
+                                    <Font size="36.0"/>
+                                 </font>
+                              </Text>
+                              <Button fx:id="generateKey" layoutX="213.0" layoutY="122.0" mnemonicParsing="false"
+                                      onAction="#generateKeyHandle" text="Generovat klíč:"/>
+                              <Text layoutX="52.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="Vygenerujte si, prosím, klíč k zašifrování/dešifrování:">
+                                 <font>
+                                    <Font size="18.0"/>
+                                 </font>
+                              </Text>
+                              <Text layoutX="250.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="Klíč:"/>
+                              <Button fx:id="toAESTextInput" layoutX="235.0" layoutY="441.0" mnemonicParsing="false"
+                                      onAction="#toAESTextInput" text="Dále"/>
                            </children>
                         </Pane>
                         <Pane fx:id="zasifrovanyTextPane" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #5CDB95;">
@@ -226,51 +283,83 @@
                               <Button fx:id="sifrovatAES" layoutX="276.0" layoutY="430.0" mnemonicParsing="false" onAction="#encryptAES" text="Šifrovat" />
                            </children>
                         </Pane>
-                     </children></Pane>
-                  <Pane fx:id="paneZacatek" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #379683;">
-                     <children>
-                        <Text fill="#edf5e1" layoutX="35.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lukáš Toral">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#edf5e1" layoutX="35.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I4B">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#05386b" layoutX="35.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dlouhodobá maturitní práce">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#05386b" layoutX="35.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vedoucí práce:" wrappingWidth="462.05859375">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#edf5e1" layoutX="35.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mgr. Radek Nowak">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </Pane>
-                  <Pane fx:id="paneDalsi" prefHeight="480.0" prefWidth="520.0" style="-fx-background-color: #2ed177;">
-                     <children>
-                        <Text fill="#05386b" layoutX="170.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vlastní RSA">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Text>
-                        <Text layoutX="139.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. prvočíslo:" />
-                        <Text layoutX="322.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. prvočíslo:" />
-                        <Label layoutX="107.0" layoutY="87.0" text="Prosím, zadejte 2 prvočísla, kdy 1 bude větší, než to druhé" />
-                        <TextField layoutX="96.0" layoutY="144.0" />
-                        <TextField layoutX="279.0" layoutY="144.0" />
-                        <Label layoutX="154.0" layoutY="208.0" text="Zadejte velmi krátky text pro zašifrování" />
-                        <TextField layoutX="186.0" layoutY="240.0" />
-                        <Button layoutX="233.0" layoutY="401.0" mnemonicParsing="false" text="Button" />
+                        <Pane fx:id="aesTextInput" prefHeight="480.0" prefWidth="520.0"
+                              style="-fx-background-color: #5CDB95;">
+                           <children>
+                              <Button fx:id="aesTextOption" layoutX="55.0" layoutY="144.0" mnemonicParsing="false"
+                                      onAction="#aesTextInputHandle" style="-fx-min-width: 102;" text="Text"/>
+                              <Text fill="#05386b" layoutX="230.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="AES">
+                                 <font>
+                                    <Font size="36.0"/>
+                                 </font>
+                              </Text>
+                              <Text layoutX="55.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                    text="Zvolte, jakým způsobem vložíte text pro zašifrování:">
+                                 <font>
+                                    <Font size="18.0"/>
+                                 </font>
+                              </Text>
+                              <Button fx:id="aesPathOption" layoutX="362.0" layoutY="144.0" mnemonicParsing="false"
+                                      onAction="#aesPathHandle" style="-fx-min-width: 102;" text="Cesta k souboru">
+                                 <opaqueInsets>
+                                    <Insets/>
+                                 </opaqueInsets>
+                              </Button>
+                              <Pane layoutY="176.0" prefHeight="200.0" prefWidth="520.0"
+                                    style="-fx-background-color: #5CDB95;">
+                                 <children>
+                                    <Pane fx:id="aesTextInputOption" prefHeight="300.0" prefWidth="520.0"
+                                          style="-fx-background-color: #5CDB95;">
+                                       <children>
+                                          <Button fx:id="toAESencryptText" layoutX="240.0" layoutY="261.0"
+                                                  mnemonicParsing="false" onAction="#toAESencryptTextHandle"
+                                                  text="Dále"/>
+                                          <Text fx:id="RSAtext1" layoutX="131.0" layoutY="34.0" strokeType="OUTSIDE"
+                                                strokeWidth="0.0" text="Vložte, prosím, text k zašifrování:">
+                                             <font>
+                                                <Font size="18.0"/>
+                                             </font>
+                                          </Text>
+                                          <TextArea fx:id="aesTextArea" layoutX="10.0" layoutY="40.0" prefHeight="160.0"
+                                                    prefWidth="500.0"
+                                                    style="-fx-border-color: #05386b; -fx-border-width: 3;"/>
+                                       </children>
+                                    </Pane>
+                                    <Pane fx:id="aesPathInputOption" prefHeight="300.0" prefWidth="520.0"
+                                          style="-fx-background-color: #5CDB95;">
+                                       <children>
+                                          <TextArea fx:id="AEScestaKsouboru" layoutX="10.0" layoutY="78.0"
+                                                    prefHeight="50.0" prefWidth="500.0"
+                                                    style="-fx-border-color: #05386b; -fx-border-width: 3;"/>
+                                          <Text layoutX="134.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                text="Vložte, prosím, cestu k souboru:">
+                                             <font>
+                                                <Font size="18.0"/>
+                                             </font>
+                                          </Text>
+                                          <Button fx:id="toAESencryptPath" layoutX="240.0" layoutY="261.0"
+                                                  mnemonicParsing="false" onAction="#toAESencryptPathHandle"
+                                                  text="Dále"/>
+                                       </children>
+                                    </Pane>
+                                    <Pane fx:id="aesFileInput" prefHeight="300.0" prefWidth="520.0"
+                                          style="-fx-background-color: #5CDB95;">
+                                       <children>
+                                          <Button fx:id="toAESencryptFile" layoutX="240.0" layoutY="261.0"
+                                                  mnemonicParsing="false" onAction="#toEncryptFileHandle" text="Dále"/>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </Pane>
+                              <Button fx:id="aesFindFile" layoutX="208.0" layoutY="144.0" mnemonicParsing="false"
+                                      onAction="#findFile" style="-fx-min-width: 102;" text="Najít soubor">
+                                 <opaqueInsets>
+                                    <Insets/>
+                                 </opaqueInsets>
+                              </Button>
+                           </children>
+                        </Pane>
                      </children></Pane>
                </children>
             </AnchorPane>
