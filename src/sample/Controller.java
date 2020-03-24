@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -22,7 +23,8 @@ public class Controller {
     public Pane paneAES, paneRSA, paneZacatek, paneDalsi, rsaTextInput, rsaStartPane, zasifrovanyTextPaneRSA, rsaTextInputOption, rsaPathInputOption, zasifrovanyTextPane, aesPathInputOption, aesTextInputOption, aesStartPane, aesTextInput, sifraPaneRSA, rsaFileInput, aesFileInputOption;
     public Label nazevProgramu, publicKey, privateKey, KeyAES;
     public TextArea zasifrovanyTextRSA, aesTextArea, AEScestaKsouboru, zasifrovanyTextAES;
-    public TextArea rsaTextArea, RSAcestaKsouboru;
+    public TextArea rsaTextArea, RSAcestaKsouboru, primeArea;
+    public TextField firstPrime, secondPrime, primeText;
     private Stage stage;
     private int RSAkeySize = 0;
     private String RSAtextToEncrypt;
@@ -333,5 +335,47 @@ public class Controller {
             sifraPaneRSA.toFront();
             zasifrovanyTextRSA.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
         }
+    }
+
+    public void primeEncryptHandle(ActionEvent actionEvent) {
+        int prime_one = 0;
+        int prime_two = 0;
+        String text_k_zasifrovani = "";
+
+        if (firstPrime.getText().equals(null) || firstPrime.getText().equals("")) {
+            Alert chyba = new Alert(Alert.AlertType.WARNING);
+            chyba.setTitle("Nastala chyba");
+            chyba.setHeaderText("Špatně zadané hodnoty");
+            chyba.setContentText("První prvočíslo nebylo zadáno!");
+            chyba.showAndWait();
+        } else {
+            prime_one = Integer.parseInt(firstPrime.getText());
+        }
+
+        if (secondPrime.getText().equals(null) || secondPrime.getText().equals("")) {
+            Alert chyba = new Alert(Alert.AlertType.WARNING);
+            chyba.setTitle("Nastala chyba");
+            chyba.setHeaderText("Špatně zadané hodnoty");
+            chyba.setContentText("Druhé prvočíslo nebylo zadáno!");
+            chyba.showAndWait();
+        } else {
+            prime_two = Integer.parseInt(secondPrime.getText());
+        }
+
+        if (primeText.getText().equals(null) || primeText.getText().equals("")) {
+            Alert chyba = new Alert(Alert.AlertType.WARNING);
+            chyba.setTitle("Nastala chyba");
+            chyba.setHeaderText("Špatně zadané hodnoty");
+            chyba.setContentText("Text k zašifrování nebyl zadáno!");
+            chyba.showAndWait();
+        } else {
+            text_k_zasifrovani = primeText.getText();
+        }
+
+        MyRSA rsa = new MyRSA(prime_one, prime_two);
+        int[] publicKey = rsa.generatePublicKey();
+
+        primeArea.setText(String.valueOf(rsa.encrypt(text_k_zasifrovani, publicKey[1])));
+
     }
 }

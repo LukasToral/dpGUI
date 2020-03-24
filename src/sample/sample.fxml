@@ -370,7 +370,8 @@
                         <Pane fx:id="inputVlastni" prefHeight="480.0" prefWidth="520.0"
                               style="-fx-background-color: #2ed177;">
                            <children>
-                              <Button layoutX="236.0" layoutY="421.0" mnemonicParsing="false" text="Button"/>
+                              <Button fx:id="primeEncrypt" layoutX="201.0" layoutY="285.0" mnemonicParsing="false"
+                                      onAction="#primeEncryptHandle" text="Sifrovat/Desifrovat"/>
                               <Text fill="#05386b" layoutX="170.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0"
                                     text="Vlastní RSA">
                                  <font>
@@ -383,10 +384,12 @@
                                     text="2. prvočíslo:"/>
                               <Label layoutX="107.0" layoutY="95.0"
                                      text="Prosím, zadejte 2 prvočísla, kdy 1 bude větší, než to druhé"/>
-                              <TextField layoutX="33.0" layoutY="164.0"/>
-                              <TextField layoutX="185.0" layoutY="240.0"/>
+                              <TextField fx:id="firstPrime" layoutX="33.0" layoutY="164.0"/>
+                              <TextField fx:id="primeText" layoutX="185.0" layoutY="240.0"/>
                               <Label layoutX="154.0" layoutY="202.0" text="Zadejte velmi krátky text pro zašifrování"/>
-                              <TextField layoutX="338.0" layoutY="164.0"/>
+                              <TextField fx:id="secondPrime" layoutX="338.0" layoutY="164.0"/>
+                              <TextArea fx:id="primeArea" layoutX="106.0" layoutY="330.0" prefHeight="125.0"
+                                        prefWidth="305.0"/>
                            </children>
                         </Pane>
                      </children></Pane>
