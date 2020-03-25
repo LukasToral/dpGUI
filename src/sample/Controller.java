@@ -378,4 +378,26 @@ public class Controller {
         primeArea.setText(String.valueOf(rsa.encrypt(text_k_zasifrovani, publicKey[1])));
 
     }
+
+    public void primeDencryptHandle(ActionEvent actionEvent) {
+        String text = primeArea.getText();
+
+        if (text.equals(null) || text.equals("")) {
+            Alert chyba = new Alert(Alert.AlertType.WARNING);
+            chyba.setTitle("Nastala chyba");
+            chyba.setHeaderText("Nebyly nalezeny hodnoty.");
+            chyba.setContentText("Zašifrovaný text nebyl nalezen.");
+            chyba.showAndWait();
+        }
+
+        int prime_one = Integer.parseInt(firstPrime.getText());
+        int prime_two = Integer.parseInt(secondPrime.getText());
+
+        MyRSA rsa = new MyRSA(prime_one, prime_two);
+        int[] publicKey = rsa.generatePublicKey();
+        int privateKey = rsa.generatePrivateKey(publicKey[1]);
+
+        primeArea.setText(String.valueOf(rsa.decrypt(Double.valueOf(text), privateKey)));
+
+    }
 }
