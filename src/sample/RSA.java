@@ -9,7 +9,7 @@ import java.util.Base64;
  * AES
  * Asymetrická šifra
  * https://cs.wikipedia.org/wiki/RSA - Popis šifry
- * https://niels.nu/blog/2016/java-rsa.html - Integrace a popis funkcí
+ * https://niels.nu/blog/2016/java-rsa.html - Integrace a popis metod
  * https://www.devglan.com/online-tools/rsa-encryption-decryption
  */
 
@@ -21,13 +21,22 @@ public class RSA{
         this.keySize = keySize;
     }
 
+    public int getKeySize() {
+        return keySize;
+    }
+
+    public void setKeySize(int keySize) {
+        this.keySize = keySize;
+    }
+
+
     public KeyPair generateKeyPair() throws Exception {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(this.keySize, new SecureRandom());
-        KeyPair pair = generator.generateKeyPair();
 
-        return pair;
+        return generator.generateKeyPair();
     }
+
 
     public static String encrypt(String plainText, PublicKey publicKey) throws Exception {
         Cipher encryptCipher = Cipher.getInstance("RSA");

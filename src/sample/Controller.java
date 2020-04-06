@@ -20,7 +20,7 @@ import java.security.KeyPair;
 public class Controller {
 
     public javafx.scene.control.Button closeButton, buttonAES, buttonRSA;
-    public Pane paneAES, paneRSA, paneZacatek, paneDalsi, rsaTextInput, rsaStartPane, zasifrovanyTextPaneRSA, rsaTextInputOption, rsaPathInputOption, zasifrovanyTextPane, aesPathInputOption, aesTextInputOption, aesStartPane, aesTextInput, sifraPaneRSA, rsaFileInput, aesFileInputOption;
+    public Pane paneAES, paneRSA, paneZacatek, paneDalsi, rsaTextInput, rsaStartPane, rsaTextInputOption, rsaPathInputOption, zasifrovanyTextPane, aesPathInputOption, aesTextInputOption, aesStartPane, aesTextInput, sifraPaneRSA, rsaFileInput, aesFileInputOption;
     public Label nazevProgramu, publicKey, privateKey, KeyAES;
     public TextArea zasifrovanyTextRSA, aesTextArea, AEScestaKsouboru, zasifrovanyTextAES;
     public TextArea rsaTextArea, RSAcestaKsouboru, primeArea;
@@ -41,7 +41,6 @@ public class Controller {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         System.out.println("Exiting app...");
         stage.close();
-
     }
 
     public void showAES(ActionEvent actionEvent) {
@@ -141,7 +140,6 @@ public class Controller {
             Text textFromFile = new Text(pathToFile);
             textFromFile.vypisSouboru();
             //Nastavi ze souboru text, ktery se bude pozdeji sifrovat
-            this.RSAtextToEncrypt = textFromFile.stringZeSouboru();
 
 
             //Kontrola, zda se jedná o textový soubor
@@ -153,10 +151,9 @@ public class Controller {
                 chyba.showAndWait();
             }
 
+            this.RSAtextToEncrypt = textFromFile.stringZeSouboru();
 
             sifraPaneRSA.toFront();
-            System.out.println(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
-            System.out.println(RSA.decrypt(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()), this.RSAkey.getPrivate()));
             zasifrovanyTextRSA.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
 
             //Kontrola, zda byla zadána cesta k souboru
@@ -173,8 +170,6 @@ public class Controller {
         this.RSAtextToEncrypt = rsaTextArea.getText();
         if (!this.RSAtextToEncrypt.isEmpty()) {
             sifraPaneRSA.toFront();
-            System.out.println(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
-            System.out.println(RSA.decrypt(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()), this.RSAkey.getPrivate()));
             zasifrovanyTextRSA.setText(RSA.encrypt(this.RSAtextToEncrypt, this.RSAkey.getPublic()));
         } else {
             Alert chyba = new Alert(Alert.AlertType.WARNING);
@@ -205,8 +200,7 @@ public class Controller {
     public void toAESTextInput(ActionEvent actionEvent) {
         if (this.AESkey != null) {
             aesTextInput.toFront();
-            System.out.println(String.valueOf(this.AESkey).isEmpty());
-            System.out.println(this.AESkey);
+
             //Kontrola, zda byla zadána velikost klíče
         } else {
             Alert chyba = new Alert(Alert.AlertType.WARNING);
@@ -282,15 +276,6 @@ public class Controller {
         zasifrovanyTextAES.setText(AES.encrypt(this.AEStextToEncrypt, String.valueOf(this.AESkey)));
     }
 
-    public void rsaFindFile(ActionEvent actionEvent) throws IOException {
-
-    }
-
-    public void aesFindFile(ActionEvent actionEvent) {
-        String caller = actionEvent.getSource().toString().substring(10, 13);
-        System.out.println(caller);
-    }
-
     public void findFile(ActionEvent actionEvent) {
         String caller = actionEvent.getSource().toString().substring(10, 13);
 
@@ -349,7 +334,15 @@ public class Controller {
             chyba.setContentText("První prvočíslo nebylo zadáno!");
             chyba.showAndWait();
         } else {
-            prime_one = Integer.parseInt(firstPrime.getText());
+            if (MyRSA.isPrime(Integer.parseInt(firstPrime.getText()))) {
+                prime_one = Integer.parseInt(firstPrime.getText());
+            } else {
+                Alert chyba = new Alert(Alert.AlertType.WARNING);
+                chyba.setTitle("Nastala chyba");
+                chyba.setHeaderText("Špatně zadané hodnoty");
+                chyba.setContentText("První prvočíslo není prvočíslo!");
+                chyba.showAndWait();
+            }
         }
 
         if (secondPrime.getText().equals(null) || secondPrime.getText().equals("")) {
@@ -359,7 +352,15 @@ public class Controller {
             chyba.setContentText("Druhé prvočíslo nebylo zadáno!");
             chyba.showAndWait();
         } else {
-            prime_two = Integer.parseInt(secondPrime.getText());
+            if (MyRSA.isPrime(Integer.parseInt(secondPrime.getText()))) {
+                prime_two = Integer.parseInt(secondPrime.getText());
+            } else {
+                Alert chyba = new Alert(Alert.AlertType.WARNING);
+                chyba.setTitle("Nastala chyba");
+                chyba.setHeaderText("Špatně zadané hodnoty");
+                chyba.setContentText("Druhé prvočíslo není prvočíslo!");
+                chyba.showAndWait();
+            }
         }
 
         if (primeText.getText().equals(null) || primeText.getText().equals("")) {
@@ -397,7 +398,7 @@ public class Controller {
         int[] publicKey = rsa.generatePublicKey();
         int privateKey = rsa.generatePrivateKey(publicKey[1]);
 
-        primeArea.setText(String.valueOf(rsa.decrypt(Double.valueOf(text), privateKey)));
+        primeArea.setText(rsa.transformTextToString(rsa.decrypt(Integer.parseInt(text), privateKey)));
 
     }
 }

@@ -17,15 +17,20 @@ import java.util.Base64;
  * Pouziva se stejný klíč k šifrování i dešifrování
  */
 
-public class AES {
+class AES {
 
     private static SecretKeySpec secretKey;
-    private static byte[] key;
 
-    public static void setKey(String myKey) {
-        MessageDigest sha = null;
+    static SecretKey generateKeyPair() throws Exception {
+        KeyGenerator generator = KeyGenerator.getInstance("AES");
+        generator.init(new SecureRandom());
+        return generator.generateKey();
+    }
+
+    private static void setKey(String myKey) {
+        MessageDigest sha;
         try {
-            key = myKey.getBytes(StandardCharsets.UTF_8);
+            byte[] key = myKey.getBytes(StandardCharsets.UTF_8);
             sha = MessageDigest.getInstance("SHA-1");
             key = sha.digest(key);
             key = Arrays.copyOf(key, 16);
@@ -35,15 +40,7 @@ public class AES {
         }
     }
 
-    public static SecretKey generateKeyPair() throws Exception {
-        KeyGenerator generator = KeyGenerator.getInstance("AES");
-        SecureRandom random = new SecureRandom(); // cryptograph. secure random
-        generator.init(random);
-        SecretKey secretKey = generator.generateKey();
-        return secretKey;
-    }
-
-    public static String encrypt(String strToEncrypt, String secret) {
+    static String encrypt(String strToEncrypt, String secret) {
         try {
             setKey(secret);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -55,7 +52,7 @@ public class AES {
         return null;
     }
 
-    public static String decrypt(String strToDecrypt, String secret) {
+    static String decrypt(String strToDecrypt, String secret) {
         try {
             setKey(secret);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");

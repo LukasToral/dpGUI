@@ -1,14 +1,19 @@
 package sample;
 
 import java.math.BigDecimal;
+import java.util.Random;
 
-public class MyRSA {
+class MyRSA {
 
     private int P;
     private int Q;
     private int T;
 
-    public MyRSA(int p, int q) {
+    /**
+     * @param p první prvočíslo
+     * @param q druhé prvnočíslo
+     */
+    MyRSA(int p, int q) {
         this.P = p;
         this.Q = q;
         this.T = (p - 1) * (q - 1);
@@ -31,21 +36,35 @@ public class MyRSA {
         return u;
     }
 
+    public static boolean isPrime(int num) {
+        boolean kontrola = false;
+
+        for (int i = 2; i <= num / 2; ++i) {
+            if (num % i == 0) {
+                kontrola = true;
+                break;
+            }
+        }
+
+        return !kontrola;
+    }
+
     /**
      * Premeni zadanou zpravu ze stringu na cislo pouzitim poradi cisla v abecede:
      * a = 1
      * b = 2 ...
      *
-     * @param message returns String message transformed to int
-     * @return
+     * @param text returns String message transformed to int
+     * @return vraci integer prevedeneho textu pomoci poradi v abecedě.
      */
-    private int transformMessageToInt(String message) {
+    private int transformTextToInt(String text) {
         //Premeni zpravu na lowercase string a pote na char array
-        char[] messageArray = message.toLowerCase().toCharArray();
+        char[] messageArray = text.toLowerCase().toCharArray();
 
-        String messageToInt = "";
+        //Pouzij jsem StringBuilder, protoze pozdeji v metodě používám metodu append namísto +=
+        StringBuilder messageToInt = new StringBuilder();
         for (char c : messageArray) {
-            //vytvoreni promenné temp a ulozeni ASCII hodnotu daného znaku
+            //vytvoreni promenné temp a ulozeni ASCII hodnotu daného znaku8
             int temp = (int) c;
 
             if (temp >= 48 && temp <= 57) {
@@ -57,45 +76,53 @@ public class MyRSA {
             int temp_integer = 96;
             if (temp <= 122 & temp >= 97) {
                 //Pomoci (temp - temp_integer) ziskam poradi v abecede
-                messageToInt += (temp - temp_integer);
+                messageToInt.append(temp - temp_integer);
+
             }
         }
-        return Integer.parseInt(messageToInt);
+        return Integer.parseInt(messageToInt.toString());
     }
 
-    private String transformMessageToString(int message) {
+    String transformTextToString(int text) {
         //Integer na char array
-        char[] messageArray = String.valueOf(message).toCharArray();
+        char[] messageArray = String.valueOf(text).toCharArray();
 
-        String messageToString = "";
+        //Pouzij jsem StringBuilder, protoze pozdeji v metodě používám metodu append namísto +=
+        StringBuilder messageToString = new StringBuilder();
         for (char c : messageArray) {
             //Premeni znak (ktery je vzdy cislo ulozene jako ve forme charu) na znak z abecedy adekvatni k hodnote intValOfC
             int intValOfC = Integer.parseInt(String.valueOf(c));
-            messageToString += (intValOfC > 0 && intValOfC < 27) ? String.valueOf((char) (intValOfC + 'a' - 1)) : null;
+            messageToString.append((intValOfC > 0 && intValOfC < 27) ? String.valueOf((char) (intValOfC + 'a' - 1)) : null);
         }
-        return messageToString;
+        return messageToString.toString();
     }
 
-    public int[] generatePublicKey() {
-
+    int[] generatePublicKey() {
+        Random generator = new Random();
         //First part of public key
         int n = this.P * this.Q;
 
         //Hledám druhou část public key -> e se stává druhou částí tohoto klíče
         //Platí podmínka 1 < e < Φ(n)
         //(Φ(n) = T = (p - 1)*(q - 1))
-        int e = 461;
-        for (int i = 2; i < this.T; i++) {
-            if (euclidsGCD(i, this.T) == 1) {
-                e = i;
-                break;
+
+        //Generujeme e
+        boolean kontrola = false;
+        int e = -1;
+        int max = (P + Q) / 2; //Hranici pro maximalni cislo urcim jako prumer prvocisel
+
+        while (kontrola != true) {
+            //(max - min + 1) + min
+            e = generator.nextInt(max - 2 + 1) + 2;
+            if (n % e != 0) {
+                kontrola = true;
             }
         }
 
         return new int[]{n, e};
     }
 
-    public int generatePrivateKey(int e) {
+    int generatePrivateKey(int e) {
         for (int i = 2; i < this.T; i++) {
             if (euclidsGCD(i, this.T) == 1) {
                 e = i;
@@ -115,7 +142,7 @@ public class MyRSA {
         return d;
     }
 
-    public int encrypt(String message, int e) {
+    int encrypt(String message, int e) {
         for (int i = 2; i < this.T; i++) {
             if (euclidsGCD(i, this.T) == 1) {
                 e = i;
@@ -124,26 +151,19 @@ public class MyRSA {
         }
 
         int n = this.P * this.Q;
-        int msg = this.transformMessageToInt(message);
-
+        int msg = this.transformTextToInt(message);
         double c = Math.pow(msg, e);
         c = c % n;
 
         return (int) Math.round(c);
     }
 
-    public int decrypt(double decryptedMessage, int privateKey) {
-        System.out.println("dec = " + decryptedMessage);
-        System.out.println("PK = " + privateKey);
-
+    int decrypt(int decryptedMessage, int privateKey) {
         BigDecimal message = new BigDecimal(decryptedMessage);
 
-        //pow(message, key)
         BigDecimal dec = message.pow(privateKey);
 
-        System.out.println("M = " + dec);
         int n = this.P * this.Q;
-
 
         return dec.remainder(new BigDecimal(n)).intValue();
     }

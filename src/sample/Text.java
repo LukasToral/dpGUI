@@ -1,27 +1,31 @@
 package sample;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Text {
     private File textovySoubor;
-    private String cestakSouboru;
 
     public Text(String cestakSouboru) {
         this.textovySoubor = new File(cestakSouboru);
     }
 
+    public File getTextovySoubor() {
+        return textovySoubor;
+    }
+
+    public void setTextovySoubor(File textovySoubor) {
+        this.textovySoubor = textovySoubor;
+    }
+
     public boolean isFile() {
-        if (textovySoubor.exists() && !textovySoubor.isDirectory()) {
-            return true;
-        } else {
-            return false;
-        }
+        return textovySoubor.exists() && !textovySoubor.isDirectory();
     }
 
     public void vypisSouboru() throws IOException {
-        if (textovySoubor.exists() && !textovySoubor.isDirectory()) {
+        if (textovySoubor.isFile()) {
             BufferedReader br = new BufferedReader(new FileReader(textovySoubor));
             String st;
             while ((st = br.readLine()) != null)
@@ -29,24 +33,9 @@ public class Text {
         }
     }
 
-    public List<Character> vytvoreniPoleZnaku() throws IOException {
-        List<Character> poleZnaku = new ArrayList<Character>();
-        if (textovySoubor.exists() && !textovySoubor.isDirectory()) {
-            BufferedReader br = new BufferedReader(new FileReader(textovySoubor));
-            int character;
-
-            while ((character = br.read()) != -1) {
-                poleZnaku.add((char) character);
-            }
-
-        }
-
-        return poleZnaku;
-    }
-
     public String stringZeSouboru() throws IOException {
-        String textZeSouboru="";
-        if (textovySoubor.exists() && !textovySoubor.isDirectory()) {
+        String textZeSouboru = "";
+        if (textovySoubor.isFile()) {
             BufferedReader br = new BufferedReader(new FileReader(textovySoubor));
             String radek;
 
